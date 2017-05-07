@@ -13,6 +13,6 @@ abstract class TestCase extends BaseTestCase
     public function setUp()
     {
         parent::setUp();
-        Artisan::call('db:seed');
+        Artisan::call('db:seed', [ '--class' => 'UsersTableSeeder' ]);
     }
 }

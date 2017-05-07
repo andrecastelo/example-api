@@ -2,10 +2,11 @@
 
 namespace Tests\Feature;
 
-use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithoutMiddleware;
+use App\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Foundation\Testing\WithoutMiddleware;
+use Tests\TestCase;
 
 class LoginTest extends TestCase
 {
@@ -26,7 +27,14 @@ class LoginTest extends TestCase
 
     public function testUserLoginsSuccessfully()
     {
-        $this->json('POST', 'api/login', ['email' => 'admin@test.com', 'password' => 'toptal'])
+        $user = factory(User::class)->create([
+            'email' => 'testlogin@user.com',
+            'password' => bcrypt('toptal123'),
+        ]);
+
+        $payload = ['email' => 'testlogin@user.com', 'password' => 'toptal123'];
+
+        $this->json('POST', 'api/login', $payload)
             ->assertStatus(200)
             ->assertJsonStructure([
                 'data' => [

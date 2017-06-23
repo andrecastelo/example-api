@@ -86,4 +86,22 @@ class ArticleTest extends TestCase
                 '*' => ['id', 'body', 'title', 'created_at', 'updated_at'],
             ]);
     }
+
+    public function testUserCantAccessArticlesWithWrongToken()
+    {
+        factory(Article::class)->create();
+        $user = factory(User::class)->create([ 'email' => 'user@test.com' ]);
+        $token = $user->generateToken();
+        $headers = ['Authorization' => "Bearer $token"];
+        $user->generateToken();
+
+        $this->json('get', '/api/articles', [], $headers)->assertStatus(401);
+    }
+
+    public function testUserCantAccessArticlesWithoutToken()
+    {
+        factory(Article::class)->create();
+
+        $this->json('get', '/api/articles')->assertStatus(401);
+    }
 }

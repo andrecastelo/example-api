@@ -35,6 +35,6 @@ class ArticleController extends Controller
     {
         $article->delete();
 
-        return response()->json('Article deleted.', 200);
+        return response()->json(null, 204);
     }
 }

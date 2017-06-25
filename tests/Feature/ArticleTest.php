@@ -57,7 +57,7 @@ class ArticleTest extends TestCase
         ]);
 
         $this->json('DELETE', '/api/articles/' . $article->id, [], $headers)
-            ->assertStatus(200);
+            ->assertStatus(204);
     }
 
     public function testArticlesAreListedCorrectly()
